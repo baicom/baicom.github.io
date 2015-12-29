@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts &middot; baicom</title>
+
+    <meta name="description" content="development blog">
+
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="Posts &middot; baicom">
+    <meta name="twitter:description" content="development blog">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Posts &middot; baicom">
+    <meta property="og:description" content="development blog">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+    <!--<![endif]-->
+
+    <link rel="stylesheet" href="http://baicom.github.io//css/all.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="baicom" href="http://baicom.github.io//index.xml" />
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="http://baicom.github.io/">baicom</a></h1>
+            <h2 class="brand-tagline"> development blog </h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://twitter.com/baicom"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://github.com/baicom "><i class="fa fa-github-alt"></i> github</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="http://baicom.github.io//index.xml"><i class="fa fa-rss"></i> rss</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                <h1 class="content-subhead">01 Jan 0001, 00:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="http://baicom.github.io/post/test/" class="post-title"></a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<h1 id="api:b128b7694e4de962e0088bcb1bcb254f">API</h1>
+
+<p>El gateway envia un request a <a href="http://wifi.tictapps.com/welcome?data=DATA">http://wifi.tictapps.com/welcome?data=DATA</a></p>
+
+<p>Siendo data los siguientes datos encodeados en base64:</p>
+
+<pre><code>{
+    &quot;ip&quot;:&quot;172.22.0.115&quot;, 
+    &quot;mac-address&quot;:&quot;00:db:df:15:42:67&quot;, 
+    &quot;url&quot;:&quot;http://google.com&quot;, 
+    &quot;gwurl&quot;:&quot;http://190.2.3.4/auth/172.22.0.103&quot;
+}
+</code></pre>
+
+<p>Se hacen algunos reemplazos para evitar problemas en la url: (+ -,/ _,= ~)</p>
+
+<p>data=eyJpcCI6IjE3Mi4yMi4wLjExNSIsICJtYWMtYWRkcmVzcyI6IjAwOmRiOmRmOjE1OjQyOjY3Iiw
+gInVybCI6Imh0dHA6Ly9nb29nbGUuY29tIiwgImd3dXJsIjoiaHR0cDovLzE5MC4yLjMuNC9hcGkvYXV
+0aCJ9Cg~~</p>
+
+<p>Como es un Mikrotik hay una direrencia en gwurl:</p>
+
+<pre><code>{
+    &quot;ip&quot;:&quot;172.22.0.115&quot;,
+    &quot;mac-address&quot;:&quot;00:db:df:15:42:67&quot;,
+    &quot;url&quot;:&quot;http://google.com&quot;, 
+    &quot;gwurl&quot;:&quot;http://wifi.tictapps.com:8080/auth/190.2.3.4&quot;
+}
+</code></pre>
+
+<h2 id="metodos-disponibles:b128b7694e4de962e0088bcb1bcb254f">Metodos disponibles</h2>
+
+<p>LOGIN</p>
+
+<pre><code>C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&quot;ip&quot;:&quot;172.22.0.115&quot;,&quot;mac-address&quot;:&quot;00:db:df:15:42:67&quot;,&quot;group&quot;:&quot;paid&quot;,
+    &quot;type&quot;:&quot;login&quot;,&quot;available&quot;:120,&quot;id&quot;:&quot;1&quot;}
+S: {&quot;status&quot;:&quot;ok&quot;}
+</code></pre>
+
+<p>LOGOUT</p>
+
+<pre><code>C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&quot;ip&quot;:&quot;172.22.0.115&quot;,&quot;mac-address&quot;:&quot;00:db:df:15:42:67&quot;,&quot;type&quot;:&quot;logout&quot;}
+S: {&quot;status&quot;:&quot;ok&quot;}
+</code></pre>
+
+<p>LOGOUT</p>
+
+<pre><code>C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&quot;ip&quot;:&quot;172.22.0.115&quot;,&quot;type&quot;:&quot;logout&quot;}
+S: {&quot;status&quot;:&quot;ok&quot;}
+</code></pre>
+
+<p>LIST (no implementado)</p>
+
+<pre><code>C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&quot;type&quot;:&quot;list&quot;}
+S: {&quot;status&quot;:&quot;ok&quot;,
+    &quot;items&quot;:[{&quot;ip&quot;:&quot;172.22.0.115&quot;,&quot;mac-address&quot;:&quot;00:db:df:15:42:67&quot;,
+              &quot;group&quot;:&quot;paid&quot;,&quot;available&quot;:45,&quot;timestamp&quot;:1427816763}]}
+</code></pre>
+
+<h2 id="proceso-con-mikrotik:b128b7694e4de962e0088bcb1bcb254f">Proceso con Mikrotik</h2>
+
+<p>mikrotik &mdash;&gt; /inform
+El mikrotik hace un POST con datos (mac ip nas)</p>
+
+<p>api/inform &mdash;&gt; tomcat data=xxx
+Se hace la redireccion al portal con los parametros data=xxx (mac ip url gwurl)</p>
+
+<p>tomcat &mdash;&gt; /auth?nas=x.x.x.x
+Se hace el POST con login/logout para permitir al usuario</p>
+
+<p>Aqui api/auth debe agregar al radius el usuario</p>
+
+<h1 id="pruebas:b128b7694e4de962e0088bcb1bcb254f">Pruebas</h1>
+
+<p>Enviar Radius</p>
+
+<pre><code>echo &quot;User-Name=1.2.3.4,Password=''&quot; | radclient -x wifi.tictapps.com auth key
+echo &quot;Framed-IP-Address=10.5.50.254,Session-Timeout=600&quot; | radclient -x \
+    -t10 -r3 172.22.0.112 coa Baicom6710
+</code></pre>
+
+<p>Crear usuario</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; from models import User
+&gt;&gt;&gt; user = User('1:2:3:4','1.2.3.4','vip',1200)
+&gt;&gt;&gt; db.session.add(user)
+&gt;&gt;&gt; db.session.commit()
+</code></pre>
+
+<h1 id="dns:b128b7694e4de962e0088bcb1bcb254f">DNS</h1>
+
+<p>Poner los DNS de BAICOM con filtros, agregar la ip publica</p>
+
+                    </div>
+                </section>
+                
+            </div>
+            
+
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Powered by <a class="hugo" href="http://hugo.spf13.com/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="http://baicom.github.io//js/all.min.js"></script>
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-xxxxxx-xx', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on baicom</title>
+    <link>http://baicom.github.io/post/</link>
+    <description>Recent content in Posts on baicom</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>es-es</language>
+    <atom:link href="http://baicom.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title></title>
+      <link>http://baicom.github.io/post/test/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://baicom.github.io/post/test/</guid>
+      <description>
+
+&lt;h1 id=&#34;api:b128b7694e4de962e0088bcb1bcb254f&#34;&gt;API&lt;/h1&gt;
+
+&lt;p&gt;El gateway envia un request a &lt;a href=&#34;http://wifi.tictapps.com/welcome?data=DATA&#34;&gt;http://wifi.tictapps.com/welcome?data=DATA&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Siendo data los siguientes datos encodeados en base64:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;ip&amp;quot;:&amp;quot;172.22.0.115&amp;quot;, 
+    &amp;quot;mac-address&amp;quot;:&amp;quot;00:db:df:15:42:67&amp;quot;, 
+    &amp;quot;url&amp;quot;:&amp;quot;http://google.com&amp;quot;, 
+    &amp;quot;gwurl&amp;quot;:&amp;quot;http://190.2.3.4/auth/172.22.0.103&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Se hacen algunos reemplazos para evitar problemas en la url: (+ -,/ _,= ~)&lt;/p&gt;
+
+&lt;p&gt;data=eyJpcCI6IjE3Mi4yMi4wLjExNSIsICJtYWMtYWRkcmVzcyI6IjAwOmRiOmRmOjE1OjQyOjY3Iiw
+gInVybCI6Imh0dHA6Ly9nb29nbGUuY29tIiwgImd3dXJsIjoiaHR0cDovLzE5MC4yLjMuNC9hcGkvYXV
+0aCJ9Cg~~&lt;/p&gt;
+
+&lt;p&gt;Como es un Mikrotik hay una direrencia en gwurl:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;ip&amp;quot;:&amp;quot;172.22.0.115&amp;quot;,
+    &amp;quot;mac-address&amp;quot;:&amp;quot;00:db:df:15:42:67&amp;quot;,
+    &amp;quot;url&amp;quot;:&amp;quot;http://google.com&amp;quot;, 
+    &amp;quot;gwurl&amp;quot;:&amp;quot;http://wifi.tictapps.com:8080/auth/190.2.3.4&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;metodos-disponibles:b128b7694e4de962e0088bcb1bcb254f&#34;&gt;Metodos disponibles&lt;/h2&gt;
+
+&lt;p&gt;LOGIN&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&amp;quot;ip&amp;quot;:&amp;quot;172.22.0.115&amp;quot;,&amp;quot;mac-address&amp;quot;:&amp;quot;00:db:df:15:42:67&amp;quot;,&amp;quot;group&amp;quot;:&amp;quot;paid&amp;quot;,
+    &amp;quot;type&amp;quot;:&amp;quot;login&amp;quot;,&amp;quot;available&amp;quot;:120,&amp;quot;id&amp;quot;:&amp;quot;1&amp;quot;}
+S: {&amp;quot;status&amp;quot;:&amp;quot;ok&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;LOGOUT&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&amp;quot;ip&amp;quot;:&amp;quot;172.22.0.115&amp;quot;,&amp;quot;mac-address&amp;quot;:&amp;quot;00:db:df:15:42:67&amp;quot;,&amp;quot;type&amp;quot;:&amp;quot;logout&amp;quot;}
+S: {&amp;quot;status&amp;quot;:&amp;quot;ok&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;LOGOUT&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&amp;quot;ip&amp;quot;:&amp;quot;172.22.0.115&amp;quot;,&amp;quot;type&amp;quot;:&amp;quot;logout&amp;quot;}
+S: {&amp;quot;status&amp;quot;:&amp;quot;ok&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;LIST (no implementado)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C: POST http://wifi.tictapps.com:8080/auth/190.2.3.4
+C: {&amp;quot;type&amp;quot;:&amp;quot;list&amp;quot;}
+S: {&amp;quot;status&amp;quot;:&amp;quot;ok&amp;quot;,
+    &amp;quot;items&amp;quot;:[{&amp;quot;ip&amp;quot;:&amp;quot;172.22.0.115&amp;quot;,&amp;quot;mac-address&amp;quot;:&amp;quot;00:db:df:15:42:67&amp;quot;,
+              &amp;quot;group&amp;quot;:&amp;quot;paid&amp;quot;,&amp;quot;available&amp;quot;:45,&amp;quot;timestamp&amp;quot;:1427816763}]}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;proceso-con-mikrotik:b128b7694e4de962e0088bcb1bcb254f&#34;&gt;Proceso con Mikrotik&lt;/h2&gt;
+
+&lt;p&gt;mikrotik &amp;mdash;&amp;gt; /inform
+El mikrotik hace un POST con datos (mac ip nas)&lt;/p&gt;
+
+&lt;p&gt;api/inform &amp;mdash;&amp;gt; tomcat data=xxx
+Se hace la redireccion al portal con los parametros data=xxx (mac ip url gwurl)&lt;/p&gt;
+
+&lt;p&gt;tomcat &amp;mdash;&amp;gt; /auth?nas=x.x.x.x
+Se hace el POST con login/logout para permitir al usuario&lt;/p&gt;
+
+&lt;p&gt;Aqui api/auth debe agregar al radius el usuario&lt;/p&gt;
+
+&lt;h1 id=&#34;pruebas:b128b7694e4de962e0088bcb1bcb254f&#34;&gt;Pruebas&lt;/h1&gt;
+
+&lt;p&gt;Enviar Radius&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;User-Name=1.2.3.4,Password=&#39;&#39;&amp;quot; | radclient -x wifi.tictapps.com auth key
+echo &amp;quot;Framed-IP-Address=10.5.50.254,Session-Timeout=600&amp;quot; | radclient -x \
+    -t10 -r3 172.22.0.112 coa Baicom6710
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Crear usuario&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;&amp;gt;&amp;gt;&amp;gt; from models import User
+&amp;gt;&amp;gt;&amp;gt; user = User(&#39;1:2:3:4&#39;,&#39;1.2.3.4&#39;,&#39;vip&#39;,1200)
+&amp;gt;&amp;gt;&amp;gt; db.session.add(user)
+&amp;gt;&amp;gt;&amp;gt; db.session.commit()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;dns:b128b7694e4de962e0088bcb1bcb254f&#34;&gt;DNS&lt;/h1&gt;
+
+&lt;p&gt;Poner los DNS de BAICOM con filtros, agregar la ip publica&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
